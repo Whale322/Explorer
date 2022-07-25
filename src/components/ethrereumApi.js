@@ -45,5 +45,4 @@ class EthereumExplorerService {
     return blocks;
   };
 }
-
 export const ethereumExplorerService = new EthereumExplorerService();

@@ -1,5 +1,7 @@
 import React from "react";
 import { Link } from "react-router-dom";
+import { ReactComponent as Plus } from "../assets/iconmonstr-plus-6.svg";
+import { ReactComponent as Minus } from "../assets/iconmonstr-minus-6.svg";
 
 
 const CardItem = ({
@@ -8,10 +10,12 @@ const CardItem = ({
   blockMiner,
   blockReward,
   checkDetails,
-  Blocks
-
+  saveBlock,
+  deleteBlock,
+  prevBlocks,
+ 
 }) => {
-  const hof = (func, arg) => {
+  const h = (func, arg) => {
     return () => {
       func(arg);
     };
@@ -26,11 +30,11 @@ const CardItem = ({
             <div>
               {" "}
               <span className="font-bold"> Number of block: </span>{" "}
-              {Blocks ? (<span> {numberOfBlock} </span>) : ( 
+              {prevBlocks ? (<span> {numberOfBlock} </span>) : ( 
               <Link to="/details">
                 <span
                   className="text-sky-500 hover:cursor-pointer  hover:text-sky-700"
-                  onClick={hof(checkDetails, numberOfBlock)}
+                  onClick={h(checkDetails, numberOfBlock)}
                 >
                   {" "}
                   {numberOfBlock}{" "}
@@ -56,6 +60,25 @@ const CardItem = ({
           </div>
         </div>
       </div>
+
+      {saveBlock ? (
+        <div
+          className="flex w-3/12 m-auto justify-center "
+        >
+          <span className=" flex justify-center w-6/12 hover:cursor-pointer" onClick={h(saveBlock, numberOfBlock)}>
+            <Plus />
+          </span>
+        </div>
+      ) : !prevBlocks ? (
+        <div
+          className="flex w-1/12 m-auto justify-center "
+          onClick={h(deleteBlock, numberOfBlock)}
+        >
+          <span className=" hover:cursor-pointer">
+            <Minus />
+          </span>
+        </div>
+      ) : null }
     </div>
   );
 };

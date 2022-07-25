@@ -5,12 +5,12 @@ import Home from "./pages/home";
 import DetailsPage from "./pages/details";
 import { Route, Routes } from "react-router-dom";
 import { ethereumExplorerService } from "./components/ethrereumApi";
-
+import Saved from "./pages/saved";
 
 function App() {
   const [blocks, setBlock] = useState();
   const [detailsOfBlock, setDetailsOfBlock] = useState({});
-  
+  const [savedBlocks, setSavedBlocks] = useState([]);
   useEffect(() => {
     let addBlocks = ethereumExplorerService.getBlocks();
     const timer = setTimeout(() => {
@@ -27,8 +27,32 @@ function App() {
     );
   };
 
+  const saveBlock = (numberOfBlock) => {
+    const newBlock = blocks.find(
+      (block) => block.blockNumber === numberOfBlock
+    );
+
+    const checkOnMatching = savedBlocks.find(
+      (block) => block.blockNumber === newBlock.blockNumber
+    );
+    !checkOnMatching
+      ? setSavedBlocks([...savedBlocks, newBlock])
+      : alert("this block is already saved");
+  };
+
+  const deleteBlock = (numberOfBlock) => {
+    const newArr = savedBlocks.filter(
+      (block) => block.blockNumber !== numberOfBlock
+    );
+    const checkOnMatching = savedBlocks.find(
+      (block) => block.blockNumber === numberOfBlock
+    );
+
+    checkOnMatching ? setSavedBlocks(newArr) : alert("this block is not saved");
+  };
+
   return (
-    <div className>
+    <div className="flex flex-col items-center ">
       <Header />
       <Routes>
         <Route
@@ -37,12 +61,23 @@ function App() {
             <Home
               blocks={blocks}
               checkDetails={checkDetails}
+              saveBlock={saveBlock}
             />
           }
         />
         <Route
           path="details"
           element={<DetailsPage block={detailsOfBlock} />}
+        />
+        <Route
+          path="saved"
+          element={
+            <Saved
+              checkDetails={checkDetails}
+              deleteBlock={deleteBlock}
+              savedBlocks={savedBlocks}
+            />
+          }
         />
       </Routes>
     </div>

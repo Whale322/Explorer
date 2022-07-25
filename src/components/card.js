@@ -2,13 +2,11 @@ import React from "react";
 
 import CardItem from "./card-item";
 
-const Card = ({ blocks, checkDetails}) => {
-
+const Card = ({ blocks, checkDetails, saveBlock, deleteBlock, prevBlocks}) => {
 
   return (
     <div className="w-100% border rounded-md shadow-xl">
       <div className="p-3">
-        <div>
           {blocks?.map((block, idx) =>
             block.blockNumber ? (
               <CardItem
@@ -18,11 +16,13 @@ const Card = ({ blocks, checkDetails}) => {
                 blockMiner={block.blockMiner}
                 blockReward={block.blockReward}
                 checkDetails={checkDetails}
+                saveBlock={saveBlock}
+                deleteBlock={deleteBlock}
+                prevBlocks={prevBlocks}              
               />
             ) : null
           )}
         </div>
-      </div>
       </div>
   );
 };
